@@ -22,8 +22,13 @@ for nome in arquivos:
         grupos[extensao] = []
     grupos[extensao].append(nome)
 
-print(f"{len(arquivos)} arquivo(s) encontrado(s) em {args.pasta}")
-for extensao, lista in grupos.items():
-    print(f"\n{extensao} ({len(lista)}):")
-    for nome in lista:
-        print(f" - {nome}")
+if not grupos:
+    print("nenhum arquivo para organizar")
+else:
+    for extensao, lista in grupos.items():
+        print(f"\n{extensao} ({len(lista)}):")
+        for nome in lista:
+            print(f"  {nome}  ->  {extensao}/{nome}")
+
+    if args.dry_run:
+        print("\n(dry-run, nada foi movido)")
