@@ -1,5 +1,6 @@
 import argparse
 import os
+import shutil
 
 parser = argparse.ArgumentParser(description="organiza arquivos de uma pasta em subpastas por extensao")
 parser.add_argument("pasta", help="caminho da pasta a organizar")
@@ -32,3 +33,15 @@ else:
 
     if args.dry_run:
         print("\n(dry-run, nada foi movido)")
+    else:
+        resposta = input("\nmover os arquivos acima? (s/n) ")
+        if resposta.lower() == "s":
+            for extensao, lista in grupos.items():
+                pasta_destino = os.path.join(args.pasta, extensao)
+                os.makedirs(pasta_destino, exist_ok=True)
+                for nome in lista:
+                    origem = os.path.join(args.pasta, nome)
+                    shutil.move(origem, os.path.join(pasta_destino, nome))
+            print("arquivos movidos")
+        else:
+            print("cancelado")
