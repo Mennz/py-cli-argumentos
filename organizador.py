@@ -7,12 +7,23 @@ parser.add_argument("--dry-run", action="store_true", help="so mostra o que seri
 
 args = parser.parse_args()
 
-# listdir pega pasta e arquivo junto, por isso o isfile
 arquivos = [
     nome for nome in os.listdir(args.pasta)
     if os.path.isfile(os.path.join(args.pasta, nome))
 ]
 
-print(f"{len(arquivos)} arquivo(s) encontrado(s) em {args.pasta}")
+grupos = {}
 for nome in arquivos:
-    print(f" - {nome}")
+    extensao = os.path.splitext(nome)[1].lower().lstrip(".")
+    if extensao == "":
+        extensao = "sem_extensao"
+
+    if extensao not in grupos:
+        grupos[extensao] = []
+    grupos[extensao].append(nome)
+
+print(f"{len(arquivos)} arquivo(s) encontrado(s) em {args.pasta}")
+for extensao, lista in grupos.items():
+    print(f"\n{extensao} ({len(lista)}):")
+    for nome in lista:
+        print(f" - {nome}")
