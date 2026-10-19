@@ -9,12 +9,14 @@ parser.add_argument("--dry-run", action="store_true", help="so mostra o que seri
 args = parser.parse_args()
 
 arquivos = [
+    # listdir traz pasta e arquivo junto, por isso o isfile
     nome for nome in os.listdir(args.pasta)
     if os.path.isfile(os.path.join(args.pasta, nome))
 ]
 
 grupos = {}
 for nome in arquivos:
+    # splitext devolve o ponto junto (".txt"), por isso o lstrip
     extensao = os.path.splitext(nome)[1].lower().lstrip(".")
     if extensao == "":
         extensao = "sem_extensao"
